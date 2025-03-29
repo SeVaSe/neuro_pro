@@ -1,0 +1,34 @@
+{
+  "topics": [
+    {
+      "id": "1",
+      "title": "ДЦП",
+      "keywords": ["ключевое слово 3", "ключевое слово 4"],
+      "content": [
+        {
+          "pathPDF": "lib/assets/data/pdf/DCPpdf.pdf"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "title": "GMFCS",
+      "keywords": ["ключевое слово 3", "ключевое слово 4"],
+      "content": [
+        {
+          "pathPDF": "lib/assets/data/pdf/GMFCSpdf.pdf"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "title": "Рентген при ДЦП",
+      "keywords": ["ключевое слово 3", "ключевое слово 4"],
+      "content": [
+        {
+          "pathPDF": "lib/assets/data/pdf/RENTGENpdf.pdf"
+        }
+      ]
+    }
+  ]
+}
