@@ -175,7 +175,7 @@ Future<bool?> showCancelConfirmationDialog(BuildContext context, TempStorage tem
           style: TextStyle(color: AppColors.secondryColor, fontFamily: 'TinosBold'),
         ),
         content: const Text(
-          'При наличии рентгенограмм у пациента, выполните данный шаг. Если рентгенограмм нет, пропустите его',
+          'У пациента есть рентгенограмма?',
           style: TextStyle(color: AppColors.text2Color),
         ),
         actions: [
@@ -199,14 +199,14 @@ Future<bool?> showCancelConfirmationDialog(BuildContext context, TempStorage tem
               );
             },
             child: const Text(
-              'Пропустить',
+              'Нету',
               style: TextStyle(color: AppColors.text1Color, fontFamily: 'TinosBold'),
             ),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(false), // Отмена
             child: const Text(
-              'Выполнить',
+              'Есть',
               style: TextStyle(color: AppColors.errorColor, fontFamily: 'TinosBold'),
             ),
           ),
