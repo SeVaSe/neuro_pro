@@ -33,7 +33,6 @@ class TopicDetailScreen extends StatelessWidget {
   }
 
   Widget _buildContent(BuildContext context) {
-    // Проверяем первый элемент контента на наличие PDF
     final firstContent = content[0];
 
     if (firstContent.containsKey('pathPDF')) {
@@ -44,7 +43,6 @@ class TopicDetailScreen extends StatelessWidget {
         canShowScrollStatus: true,
       );
     } else {
-      // Если нет PDF, отображаем текстовый контент
       return _buildTextContent(context);
     }
   }
@@ -58,7 +56,55 @@ class TopicDetailScreen extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Отображаем текст, если есть
+              // Отображаем возрастную группу, если есть
+              if (item.containsKey('ageGroup') && item['ageGroup'] != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
+                  child: Text(
+                    item['ageGroup'],
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                ),
+
+              // Отображаем уровни внутри возрастной группы
+              if (item.containsKey('levels') && item['levels'] is List)
+                ...List<Widget>.from(item['levels'].map<Widget>((levelItem) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 12.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (levelItem.containsKey('level') && levelItem['level'] != null)
+                          Text(
+                            levelItem['level'],
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                        if (levelItem.containsKey('text') && levelItem['text'] != null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4.0),
+                            child: Text(
+                              levelItem['text'],
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.black87,
+                                height: 1.5,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  );
+                })),
+
+              // Отображаем текст, если есть (для совместимости со старым форматом)
               if (item.containsKey('text') && item['text'] != null)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),
@@ -137,7 +183,6 @@ class TopicDetailScreen extends StatelessWidget {
           insetPadding: const EdgeInsets.all(16),
           child: Stack(
             children: [
-              // Увеличенное изображение с возможностью масштабирования
               InteractiveViewer(
                 minScale: 0.5,
                 maxScale: 4.0,
@@ -156,7 +201,6 @@ class TopicDetailScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              // Кнопка закрытия
               Positioned(
                 top: 16,
                 right: 16,

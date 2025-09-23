@@ -175,7 +175,7 @@ Future<bool?> showCancelConfirmationDialog(BuildContext context, TempStorage tem
           style: TextStyle(color: AppColors.secondryColor, fontFamily: 'TinosBold'),
         ),
         content: const Text(
-          'У пациента есть рентгенограмма?',
+          'Выберите один из предложенных вариантов ответа!',
           style: TextStyle(color: AppColors.text2Color),
         ),
         actions: [

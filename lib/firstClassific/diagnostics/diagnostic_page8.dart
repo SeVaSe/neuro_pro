@@ -157,7 +157,7 @@ class _DiagnosticPage8State extends State<DiagnosticPage8> {
         builder: (BuildContext context) {
           return AlertDialog(
             backgroundColor: Colors.white,
-            title: Text('Выберите тип походки'),
+            title: Text('Выберите тип походки по Амстердамской классификации'),
             titleTextStyle: TextStyle(
               color: AppColors.secondryColor,
               fontWeight: FontWeight.bold,
@@ -166,37 +166,74 @@ class _DiagnosticPage8State extends State<DiagnosticPage8> {
             ),
             content: StatefulBuilder(
               builder: (BuildContext context, StateSetter setDialogState) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: _gaitTypes.map((type) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Row(
-                        children: [
-                          CustomCheckbox(
-                            isSelected: _selectedGaitType == type,
-                            onChanged: (value) {
-                              setDialogState(() {
-                                if (value) {
-                                  _selectedGaitType = type;
-                                } else {
-                                  _selectedGaitType = null;
-                                }
-                              });
-                            },
+                return SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Добавляем изображение
+                      GestureDetector(
+                        onTap: () {
+                          _showImageDialog();
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          height: 200,
+                          margin: EdgeInsets.only(bottom: 16),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
                           ),
-                          const SizedBox(width: 10),
-                          Text(
-                            type,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: AppColors.text2Color,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.asset(
+                              'lib/assets/imgs/imgPohodka.png',
+                              fit: BoxFit.contain,
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    );
-                  }).toList(),
+
+                      // Список типов походки
+                      ..._gaitTypes.map((type) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Row(
+                            children: [
+                              CustomCheckbox(
+                                isSelected: _selectedGaitType == type,
+                                onChanged: (value) {
+                                  setDialogState(() {
+                                    if (value) {
+                                      _selectedGaitType = type;
+                                    } else {
+                                      _selectedGaitType = null;
+                                    }
+                                  });
+                                },
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  type,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.text2Color,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    ],
+                  ),
                 );
               },
             ),
@@ -205,7 +242,13 @@ class _DiagnosticPage8State extends State<DiagnosticPage8> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('Отмена', style: TextStyle(color: AppColors.text1Color, fontFamily: 'TinosBold'),),
+                child: Text(
+                  'Отмена',
+                  style: TextStyle(
+                      color: AppColors.text1Color,
+                      fontFamily: 'TinosBold'
+                  ),
+                ),
               ),
               TextButton(
                 onPressed: () {
@@ -233,13 +276,107 @@ class _DiagnosticPage8State extends State<DiagnosticPage8> {
                     );
                   }
                 },
-                child: Text(AppStrings.buttonCancelString, style: TextStyle(color: AppColors.text1Color, fontFamily: 'TinosBold'),),
+                child: Text(
+                  AppStrings.buttonCancelString,
+                  style: TextStyle(
+                      color: AppColors.text1Color,
+                      fontFamily: 'TinosBold'
+                  ),
+                ),
               ),
             ],
           );
         },
       );
     }
+  }
+
+// Добавьте этот метод для показа увеличенного изображения с возможностью масштабирования
+  void _showImageDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding: EdgeInsets.zero,
+          child: Stack(
+            children: [
+              // Затемненный фон, который можно нажать для закрытия
+              GestureDetector(
+                onTap: () => Navigator.of(context).pop(),
+                child: Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  color: Colors.black87,
+                ),
+              ),
+              // Увеличенное изображение с возможностью масштабирования
+              Center(
+                child: Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: InteractiveViewer(
+                    minScale: 0.5,
+                    maxScale: 4.0,
+                    child: Container(
+                      width: double.infinity,
+                      height: double.infinity,
+                      child: Image.asset(
+                        'lib/assets/imgs/imgPohodka.png',
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              // Кнопка закрытия
+              Positioned(
+                top: 50,
+                right: 20,
+                child: GestureDetector(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Container(
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.7),
+                      borderRadius: BorderRadius.circular(22),
+                      border: Border.all(color: Colors.white.withOpacity(0.3)),
+                    ),
+                    child: Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                  ),
+                ),
+              ),
+              // Подсказка для пользователя (опционально)
+              Positioned(
+                bottom: 50,
+                left: 20,
+                right: 20,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.7),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    'Используйте жесты для увеличения/уменьшения изображения',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override

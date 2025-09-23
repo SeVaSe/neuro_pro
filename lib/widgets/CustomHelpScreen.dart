@@ -126,6 +126,22 @@ class SpravkaDialog extends StatelessWidget {
                                   ),
                                 ),
                               );
+                            } else if (content.type == 'important') {
+                              // Новый тип для жирного красного текста
+                              return Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: screenWidth * 0.04, vertical: screenHeight * 0.01),
+                                child: Text(
+                                  content.text ?? '',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: screenWidth * 0.037,
+                                    height: 1.15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              );
                             }
                             return Container();
                           }).toList(),
